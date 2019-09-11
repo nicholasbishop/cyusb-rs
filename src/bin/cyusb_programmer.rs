@@ -49,14 +49,18 @@ fn main() {
     let mut context = rusb::Context::new().unwrap();
 
     for mut device in context.devices().unwrap().iter() {
-        let device_desc = device.device_descriptor().unwrap();
+        let desc = device.device_descriptor().unwrap();
+
+        if desc.vendor_id() != 0x04b4 || desc.product_id() != 0x00f3 {
+            continue;
+        }
 
         println!(
             "Bus {:03} Device {:03} ID {:04x}:{:04x}",
             device.bus_number(),
             device.address(),
-            device_desc.vendor_id(),
-            device_desc.product_id()
+            desc.vendor_id(),
+            desc.product_id()
         );
     }
 }
