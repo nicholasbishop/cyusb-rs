@@ -1,0 +1,12 @@
+[package]
+name = "fx3"
+version = "0.1.0"
+authors = ["Nicholas Bishop <nicholasbishop@gmail.com>"]
+edition = "2018"
+repository = "https://github.com/nicholasbishop/fx3"
+license = "Apache-2.0"
+description = "Host crate for interacting with the Cypress FX3"
+readme = "README.md"
+
+[dependencies]
+rusb = "0.5.1"
