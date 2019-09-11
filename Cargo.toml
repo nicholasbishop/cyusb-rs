@@ -10,3 +10,4 @@ readme = "README.md"
 
 [dependencies]
 rusb = "0.5.1"
+structopt = "0.3"
