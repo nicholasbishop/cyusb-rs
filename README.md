@@ -1,3 +1,3 @@
-# fx3
+# cyusb
 
-Host crate for interacting with the Cypress FX3.
+Host crate for interacting with Cypress USB devices.

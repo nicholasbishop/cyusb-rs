@@ -1,3 +1,4 @@
+use rusb::UsbContext;
 use std::path::PathBuf;
 use structopt::StructOpt;
 
@@ -17,13 +18,16 @@ impl std::str::FromStr for Target {
             "ram" => Ok(Target::Ram),
             "i2c" => Ok(Target::I2c),
             "spi" => Ok(Target::Spi),
-            _ => Err("invalid target".to_string())
+            _ => Err("invalid target".to_string()),
         }
     }
 }
 
 #[derive(Debug, StructOpt)]
-#[structopt(name = "fx3", about = "Write firmware to a Cypress FX3 device.")]
+#[structopt(
+    name = "cyusb_programmer",
+    about = "Write firmware to a Cypress FX3 device."
+)]
 struct Opt {
     /// Input file
     #[structopt(parse(from_os_str))]
@@ -41,4 +45,18 @@ struct Opt {
 fn main() {
     let opt = Opt::from_args();
     println!("{:?}", opt);
+
+    let mut context = rusb::Context::new().unwrap();
+
+    for mut device in context.devices().unwrap().iter() {
+        let device_desc = device.device_descriptor().unwrap();
+
+        println!(
+            "Bus {:03} Device {:03} ID {:04x}:{:04x}",
+            device.bus_number(),
+            device.address(),
+            device_desc.vendor_id(),
+            device_desc.product_id()
+        );
+    }
 }

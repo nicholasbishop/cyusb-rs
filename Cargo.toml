@@ -1,11 +1,11 @@
 [package]
-name = "fx3"
+name = "cyusb"
 version = "0.1.0"
 authors = ["Nicholas Bishop <nicholasbishop@gmail.com>"]
 edition = "2018"
-repository = "https://github.com/nicholasbishop/fx3"
+repository = "https://github.com/nicholasbishop/cyusb-rs"
 license = "Apache-2.0"
-description = "Host crate for interacting with the Cypress FX3"
+description = "Host crate for interacting with Cypress USB devices"
 readme = "README.md"
 
 [dependencies]
