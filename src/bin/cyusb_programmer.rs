@@ -1,5 +1,6 @@
 use rusb::UsbContext;
 use std::path::PathBuf;
+use std::process::exit;
 use structopt::StructOpt;
 
 #[derive(Debug)]
@@ -44,17 +45,16 @@ struct Opt {
 
 fn main() {
     let opt = Opt::from_args();
-    println!("{:?}", opt);
 
-    let mut context = rusb::Context::new().unwrap();
+    let context = rusb::Context::new().unwrap();
+    
+    let devices = context.devices().unwrap().iter().filter(|d| {
+        let desc = d.device_descriptor().unwrap();
+        desc.vendor_id() == 0x04b4 && desc.product_id() == 0x00f3
+    }).collect::<Vec<_>>();
 
-    for mut device in context.devices().unwrap().iter() {
+    if let Some(device) = devices.get(opt.index) {
         let desc = device.device_descriptor().unwrap();
-
-        if desc.vendor_id() != 0x04b4 || desc.product_id() != 0x00f3 {
-            continue;
-        }
-
         println!(
             "Bus {:03} Device {:03} ID {:04x}:{:04x}",
             device.bus_number(),
@@ -62,5 +62,8 @@ fn main() {
             desc.vendor_id(),
             desc.product_id()
         );
+    } else {
+        eprintln!("invalid index, detected {} device(s)", devices.len());
+        exit(1);
     }
 }
