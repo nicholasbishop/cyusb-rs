@@ -4,7 +4,7 @@ Host crate for interacting with Cypress USB devices.
 
 ## cyusb_programmer
 
-This crate includes a binary for programming a Cypress device. To install:
+This crate includes an executable for programming a Cypress device. To install:
 
     cargo install cyusb
     
