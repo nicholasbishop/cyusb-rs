@@ -1,5 +1,5 @@
+use log::{error, info};
 use rusb::UsbContext;
-
 use std::path::PathBuf;
 use std::process::exit;
 use structopt::StructOpt;
@@ -45,9 +45,15 @@ struct Opt {
 }
 
 fn main() {
+    env_logger::builder()
+        .format_target(false)
+        .format_timestamp(None)
+        .filter_level(log::LevelFilter::Info)
+        .init();
+
     let opt = Opt::from_args();
     if opt.target != Target::Ram {
-        eprintln!("only the RAM target works currently");
+        error!("only the RAM target works currently");
         exit(1);
     }
 
@@ -64,15 +70,15 @@ fn main() {
         .collect::<Vec<_>>();
 
     if devices.len() == 1 {
-        println!("1 device detected");
+        info!("1 device detected");
     } else {
-        println!("{} devices detected", devices.len());
+        info!("{} devices detected", devices.len());
     }
 
     if let Some(device) = devices.get(opt.index) {
         cyusb::program_fx3_ram(&device.open().unwrap(), &opt.image).unwrap();
     } else {
-        eprintln!("invalid index, detected {} device(s)", devices.len());
+        error!("invalid index, detected {} device(s)", devices.len());
         exit(1);
     }
 }
