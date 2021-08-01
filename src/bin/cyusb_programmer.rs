@@ -63,6 +63,12 @@ fn main() {
         })
         .collect::<Vec<_>>();
 
+    if devices.len() == 1 {
+        println!("1 device detected");
+    } else {
+        println!("{} devices detected", devices.len());
+    }
+
     if let Some(device) = devices.get(opt.index) {
         cyusb::program_fx3_ram(&device.open().unwrap(), &opt.image).unwrap();
     } else {
