@@ -76,7 +76,12 @@ fn main() {
     }
 
     if let Some(device) = devices.get(opt.index) {
-        cyusb::program_fx3_ram(&device.open().unwrap(), &opt.image).unwrap();
+        if let Err(err) =
+            cyusb::program_fx3_ram(&device.open().unwrap(), &opt.image)
+        {
+            error!("program_fx3_ram failed: {:?}", err);
+            exit(1);
+        }
     } else {
         error!("invalid index, detected {} device(s)", devices.len());
         exit(1);

@@ -1,7 +1,9 @@
+use log::info;
 use std::{
     array::TryFromSliceError, convert::TryInto, fs, io, path::Path, thread,
     time::Duration,
 };
+
 pub type DeviceHandle = rusb::DeviceHandle<rusb::Context>;
 
 #[derive(Debug)]
@@ -121,6 +123,7 @@ pub fn program_fx3_ram(
     };
 
     // Transfer the program to the FX3
+    info!("transfering program to the device");
     loop {
         let length = read_u32(&mut offset)?;
         let address = read_u32(&mut offset)?;
@@ -139,6 +142,7 @@ pub fn program_fx3_ram(
     }
 
     // Read checksum
+    info!("validating checksum");
     let expected_checksum = read_u32(&mut offset)?;
     if expected_checksum != checksum.value {
         return Err(Error::InvalidChecksum);
