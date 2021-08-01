@@ -94,7 +94,7 @@ pub fn program_fx3_ram(
     let program = fs::read(path).map_err(Error::IoError)?;
 
     // Program must start with "CY"
-    if program[0] != 'C' as u8 || program[1] != 'Y' as u8 {
+    if program[0] != b'C' || program[1] != b'Y' {
         return Err(Error::MissingMagic);
     }
 
