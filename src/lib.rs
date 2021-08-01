@@ -6,15 +6,28 @@ use std::{
 
 pub type DeviceHandle = rusb::DeviceHandle<rusb::Context>;
 
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error)]
 pub enum Error {
+    #[error("io error: {0}")]
     IoError(io::Error),
+
     /// "CY" prefix is missing
+    #[error("invalid prefix")]
     MissingMagic,
+
+    #[error("image is not executable")]
     NotExecutable,
+
+    #[error("abnormal image")]
     AbnormalFirmware,
+
+    #[error("invalid checksum")]
     InvalidChecksum,
+
+    #[error("truncated data: {0}")]
     TruncatedData(TryFromSliceError),
+
+    #[error("usb error: {0}")]
     UsbError(rusb::Error),
 }
 
