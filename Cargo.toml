@@ -9,5 +9,5 @@ description = "Host crate for interacting with Cypress USB devices"
 readme = "README.md"
 
 [dependencies]
-rusb = "0.5.1"
+rusb = "0.8"
 structopt = "0.3"
